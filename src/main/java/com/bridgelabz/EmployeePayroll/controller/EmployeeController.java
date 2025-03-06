@@ -2,6 +2,8 @@ package com.bridgelabz.EmployeePayroll.controller;
 
 import com.bridgelabz.EmployeePayroll.dto.EmployeeDTO;
 import com.bridgelabz.EmployeePayroll.model.Employee;
+import com.bridgelabz.EmployeePayroll.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,42 +14,32 @@ import java.util.Optional;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private List<Employee> employeeList = new ArrayList<>();
-    private long idCounter = 1L;
+    @Autowired
+    private EmployeeService service;
 
     @GetMapping
     public List<Employee> getAllEmployees(){
-        return employeeList;
+        return service.getAllEmployees();
     }
 
     @GetMapping("/{id}")
     public Optional<Employee> employeeListById(@PathVariable long id){
-        return employeeList.stream().filter(emp -> emp.getId().equals(id)).findFirst();
+        return  service.getEmployeeById(id);
     }
 
     @PostMapping
     public Employee addEmployee(@RequestBody EmployeeDTO employeeDTO){
-        Employee employee = new Employee(employeeDTO); // Convert DTO to Entity
-        employee.setId(idCounter++);
-        employeeList.add(employee);
-        return employee;
+        return service.addEmployee(employeeDTO);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
-        for(int i=0; i<employeeList.size(); i++){
-            if(employeeList.get(i).getId().equals(id)){
-                employee.setId(id);
-                employeeList.set(i,employee);
-                return employee;
-            }
-        }
-        return null;
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO){
+        return service.updateEmployee(id,employeeDTO);
     }
 
     @DeleteMapping("/{id}")
     public String deleteEmployee(@PathVariable Long id){
-        employeeList.removeIf(emp -> emp.getId().equals(id));
+        service.deleteEmployee(id);
         return "Employee with ID " + id + " deleted.";
     }
 
