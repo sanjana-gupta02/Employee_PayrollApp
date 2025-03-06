@@ -11,23 +11,27 @@ import java.util.Optional;
 @Service
 public class EmployeeService {
     private final List<Employee> employeeList = new ArrayList<>();
-    private Long idCounter = 1L;
+    private Long idCounter = 1L; // Simulating auto-increment ID
 
+    // Get All Employees
     public List<Employee> getAllEmployees() {
-        return employeeList;
+        return new ArrayList<>(employeeList); // Returning a copy to prevent direct modification
     }
 
+    // Get Employee by ID
     public Optional<Employee> getEmployeeById(Long id) {
         return employeeList.stream().filter(emp -> emp.getId().equals(id)).findFirst();
     }
 
+    // Add New Employee
     public Employee addEmployee(EmployeeDTO employeeDTO) {
         Employee employee = new Employee(employeeDTO);
-        employee.setId(idCounter++);
-        employeeList.add(employee);
+        employee.setId(idCounter++); // Assigning unique ID
+        employeeList.add(employee); // Storing in memory
         return employee;
     }
 
+    // Update Employee
     public Employee updateEmployee(Long id, EmployeeDTO employeeDTO) {
         for (int i = 0; i < employeeList.size(); i++) {
             if (employeeList.get(i).getId().equals(id)) {
@@ -37,9 +41,10 @@ public class EmployeeService {
                 return updatedEmployee;
             }
         }
-        return null;
+        return null; // Employee not found
     }
 
+    // Delete Employee
     public void deleteEmployee(Long id) {
         employeeList.removeIf(emp -> emp.getId().equals(id));
     }
