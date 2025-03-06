@@ -1,5 +1,6 @@
 package com.bridgelabz.EmployeePayroll.controller;
 
+import com.bridgelabz.EmployeePayroll.dto.EmployeeDTO;
 import com.bridgelabz.EmployeePayroll.model.Employee;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee){
+    public Employee addEmployee(@RequestBody EmployeeDTO employeeDTO){
+        Employee employee = new Employee(employeeDTO); // Convert DTO to Entity
         employee.setId(idCounter++);
         employeeList.add(employee);
         return employee;

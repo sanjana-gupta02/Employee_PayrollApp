@@ -1,5 +1,6 @@
 package com.bridgelabz.EmployeePayroll.model;
 
+import com.bridgelabz.EmployeePayroll.dto.EmployeeDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,4 +20,11 @@ public class Employee {
     private String name;
     private Long salary;
     private LocalDate date;
+
+    // Constructor to convert EmployeeDTO to Employee
+    public Employee(EmployeeDTO dto) {
+        this.name = dto.getName();
+        this.salary = dto.getSalary();
+        this.date = LocalDate.now(); // Default to current date
+    }
 }
